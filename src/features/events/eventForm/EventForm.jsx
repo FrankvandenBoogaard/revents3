@@ -1,15 +1,53 @@
 import { PaperClipIcon } from "@heroicons/react/solid";
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
+import { useState } from "react";
+import cuid from "cuid";
 
-export default function EventForm({ setFormOpen }) {
+export default function EventForm({
+  setFormOpen,
+  setEvents,
+  createEvent,
+  selectedEvent,
+  updateEvent,
+}) {
+  const initialValues = selectedEvent ?? {
+    title: "",
+    category: "",
+    description: "",
+    city: "",
+    venue: "",
+    date: "",
+  };
+
+  const [values, setValues] = useState(initialValues);
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    selectedEvent
+      ? updateEvent({ ...selectedEvent, ...values })
+      : createEvent({
+          ...values,
+          id: cuid(),
+          hostedBy: "Bob",
+          attendees: [],
+          hostPhotoURL: "/assets/user.png",
+        });
+    setFormOpen(false);
+  }
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  }
+
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mb-4'>
       <div className='px-4 py-5 sm:px-6'>
         <h3 className='text-lg leading-6 font-medium text-gray-900'>
-          Create new event
+          {selectedEvent ? "Edit the event" : "Create new event"}
         </h3>
       </div>
-      <form>
+      <form onSubmit={handleFormSubmit}>
         {/* <form action='#' method='POST'> */}
         <div className='shadow overflow-hidden sm:rounded-md'>
           <div className='px-4 py-5 bg-white sm:p-6'>
@@ -75,9 +113,10 @@ export default function EventForm({ setFormOpen }) {
                       </label> */}
                 <input
                   placeholder='Event Title'
+                  value={values.title}
+                  onChange={(e) => handleInputChange(e)}
                   type='text'
-                  name='event_title'
-                  id='event_title'
+                  name='title'
                   // autoComplete="street-address"
                   className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                 />
@@ -88,9 +127,10 @@ export default function EventForm({ setFormOpen }) {
                       </label> */}
                 <input
                   placeholder='Category'
+                  value={values.category}
+                  onChange={(e) => handleInputChange(e)}
                   type='text'
                   name='category'
-                  id='category'
                   // autoComplete="street-address"
                   className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                 />
@@ -101,9 +141,10 @@ export default function EventForm({ setFormOpen }) {
                       </label> */}
                 <input
                   placeholder='Description'
+                  value={values.description}
+                  onChange={(e) => handleInputChange(e)}
                   type='text'
                   name='description'
-                  id='description'
                   // autoComplete="street-address"
                   className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                 />
@@ -114,9 +155,10 @@ export default function EventForm({ setFormOpen }) {
                       </label> */}
                 <input
                   placeholder='City'
+                  value={values.city}
+                  onChange={(e) => handleInputChange(e)}
                   type='text'
                   name='city'
-                  id='city'
                   // autoComplete="street-address"
                   className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                 />
@@ -127,9 +169,10 @@ export default function EventForm({ setFormOpen }) {
                       </label> */}
                 <input
                   placeholder='Venue'
+                  value={values.venue}
+                  onChange={(e) => handleInputChange(e)}
                   type='text'
                   name='venue'
-                  id='venue'
                   // autoComplete="street-address"
                   className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                 />
@@ -143,9 +186,10 @@ export default function EventForm({ setFormOpen }) {
                     Date
                   </span>
                   <input
+                    value={values.date}
+                    onChange={(e) => handleInputChange(e)}
                     type='date'
                     name='date'
-                    id='date'
                     className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300'
                   />
                 </div>
@@ -191,7 +235,7 @@ export default function EventForm({ setFormOpen }) {
           </div>
           <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
             <button
-              type='text'
+              type='submit'
               className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
               onClick={() => setFormOpen(false)}
             >

@@ -2,12 +2,23 @@ import { PaperClipIcon } from "@heroicons/react/solid";
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import EventListAttendee from "./EventListAttendee";
 
-export default function EventListItem({ event }) {
+export default function EventListItem({ event, selectEvent, deleteEvent }) {
+  function handleSelectEventOnClick(e) {
+    e.preventDefault();
+    selectEvent(event);
+  }
+  function handleDeleteEventOnClick(e) {
+    e.preventDefault();
+    deleteEvent(event.id);
+  }
+
+
+
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mb-4'>
       <div className='px-4 py-5 sm:px-6'>
         <img
-          className='h-10 w-10 rounded-full float-left mr-4'
+          className='h-14 w-14 rounded-full float-left mr-4'
           src={event.hostPhotoURL}
           alt=''
         />
@@ -49,10 +60,7 @@ export default function EventListItem({ event }) {
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
               <div className='flex -space-x-2 overflow-hidden'>
                 {event.attendees.map((attendee) => (
-                  <EventListAttendee
-                    key={attendee.id}
-                    attendee={attendee}
-                  />
+                  <EventListAttendee key={attendee.id} attendee={attendee} />
                 ))}
               </div>
             </dd>
@@ -64,18 +72,20 @@ export default function EventListItem({ event }) {
             </dd>
           </div>
           <div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500'></dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
+            <dt className='text-sm font-medium text-gray-500 col-span-2'></dt>
+            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 text-right'>
               <>
                 <a
                   href='#'
-                  className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
+                  className='whitespace-nowrap text-base font-medium text-red-500 hover:text-red-900'
+                  onClick={handleDeleteEventOnClick}
                 >
-                  Sign in
+                  Delete
                 </a>
                 <a
                   href='#'
                   className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
+                  onClick={handleSelectEventOnClick}
                 >
                   View
                 </a>
