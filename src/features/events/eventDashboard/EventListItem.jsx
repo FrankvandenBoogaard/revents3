@@ -1,17 +1,11 @@
-import { PaperClipIcon } from "@heroicons/react/solid";
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import EventListAttendee from "./EventListAttendee";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteEvent } from "../eventActions";
 
-export default function EventListItem({ event, selectEvent, deleteEvent }) {
-  function handleSelectEventOnClick(e) {
-    e.preventDefault();
-    selectEvent(event);
-  }
-  function handleDeleteEventOnClick(e) {
-    e.preventDefault();
-    deleteEvent(event.id);
-  }
+export default function EventListItem({ event }) {
+  const dispatch = useDispatch();
 
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mb-4'>
@@ -74,13 +68,12 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
             <dt className='text-sm font-medium text-gray-500 col-span-2'></dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 text-right'>
               <>
-                <a
-                  href='#'
+                <Link
                   className='whitespace-nowrap text-base font-medium text-red-500 hover:text-red-900'
-                  onClick={handleDeleteEventOnClick}
+                  onClick={() => dispatch(deleteEvent(event.id))}
                 >
                   Delete
-                </a>
+                </Link>
                 <Link
                   className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
                   to={`/events/${event.id}`}

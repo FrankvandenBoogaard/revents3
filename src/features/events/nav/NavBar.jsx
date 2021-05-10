@@ -219,11 +219,16 @@ export default function NavBar({ setFormOpen }) {
                 >
                   Events
                 </NavLink>
+                <NavLink
+                  to='/sandbox'
+                  className='text-base font-medium text-gray-500 hover:text-gray-900'
+                >
+                  Sandbox
+                </NavLink>
                 {authenticated && (
                   <NavLink
                     to='/createEvent'
                     className='text-base font-medium text-gray-500 hover:text-gray-900'
-                    onClick={() => setFormOpen(true)}
                   >
                     Create Event
                   </NavLink>

@@ -4,7 +4,7 @@ import {
   LocationMarkerIcon,
 } from "@heroicons/react/outline";
 
-export default function EventDetailedInfo() {
+export default function EventDetailedInfo({event}) {
   return (
     <>
       <div className='border-t border-gray-200 px-4 py-5 sm:px-6'>
@@ -15,7 +15,7 @@ export default function EventDetailedInfo() {
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              Event Description
+              {event.description}
             </dt>
             {/* <dd className='mt-1 text-sm text-gray-900'>
                     Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
@@ -35,7 +35,7 @@ export default function EventDetailedInfo() {
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              Event Date
+              {event.date}
             </dt>
             {/* <dd className='mt-1 text-sm text-gray-900'>
                     Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
@@ -49,13 +49,13 @@ export default function EventDetailedInfo() {
       </div>
       <div className='border-t border-gray-200 px-4 py-5 sm:px-6'>
         <dl className='grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2'>
-          <div>
+          <div className='sm:col-span-2'>
             <dt className='text-sm font-medium text-gray-500'>
               <LocationMarkerIcon
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              Event Venue
+              {event.venue}
             </dt>
           </div>
         </dl>

@@ -1,16 +1,15 @@
-import { PaperClipIcon } from "@heroicons/react/solid";
-import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import cuid from "cuid";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { createEvent, updateEvent } from "../eventActions";
 
-export default function EventForm({
-  setFormOpen,
-  setEvents,
-  createEvent,
-  selectedEvent,
-  updateEvent,
-}) {
+export default function EventForm({ match, history }) {
+  const dispatch = useDispatch();
+  const selectedEvent = useSelector((state) =>
+    state.event.events.find((e) => e.id === match.params.id)
+  );
+
   const initialValues = selectedEvent ?? {
     title: "",
     category: "",
@@ -25,15 +24,17 @@ export default function EventForm({
   function handleFormSubmit(e) {
     e.preventDefault();
     selectedEvent
-      ? updateEvent({ ...selectedEvent, ...values })
-      : createEvent({
-          ...values,
-          id: cuid(),
-          hostedBy: "Bob",
-          attendees: [],
-          hostPhotoURL: "/assets/user.png",
-        });
-    setFormOpen(false);
+      ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+      : dispatch(
+          createEvent({
+            ...values,
+            id: cuid(),
+            hostedBy: "Bob",
+            attendees: [],
+            hostPhotoURL: "/assets/user.png",
+          })
+        );
+    history.push("/events");
   }
 
   function handleInputChange(e) {
@@ -240,7 +241,6 @@ export default function EventForm({
               to='/events'
               type='submit'
               className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
-              
             >
               Cancel
             </button>

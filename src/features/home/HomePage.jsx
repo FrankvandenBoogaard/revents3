@@ -14,10 +14,10 @@
   }
   ```
 */
-import { ArrowRightIcon, LockClosedIcon } from "@heroicons/react/solid";
+import { ArrowRightIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 
-export default function HomePage({ history }) {
+export default function HomePage() {
   return (
     <div className='min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-md w-full space-y-8'>
@@ -36,8 +36,8 @@ export default function HomePage({ history }) {
         </div>
         <div className='mt-8 space-y-6'>
           <div>
-            <button
-              onClick={() => history.push("/events")}
+            <Link
+              to={"/events"}
               className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
             >
               Get started
@@ -47,7 +47,7 @@ export default function HomePage({ history }) {
                   aria-hidden='true'
                 />
               </span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
