@@ -1,6 +1,7 @@
 import { PaperClipIcon } from "@heroicons/react/solid";
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import EventListAttendee from "./EventListAttendee";
+import { Link } from "react-router-dom";
 
 export default function EventListItem({ event, selectEvent, deleteEvent }) {
   function handleSelectEventOnClick(e) {
@@ -11,8 +12,6 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
     e.preventDefault();
     deleteEvent(event.id);
   }
-
-
 
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mb-4'>
@@ -82,13 +81,12 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
                 >
                   Delete
                 </a>
-                <a
-                  href='#'
+                <Link
                   className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
-                  onClick={handleSelectEventOnClick}
+                  to={`/events/${event.id}`}
                 >
                   View
-                </a>
+                </Link>
               </>
               {/* <ul className='border border-gray-200 rounded-md divide-y divide-gray-200'>
                 <li className='pl-3 pr-4 py-3 flex items-center justify-between text-sm'>

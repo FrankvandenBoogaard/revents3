@@ -2,6 +2,7 @@ import { PaperClipIcon } from "@heroicons/react/solid";
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import cuid from "cuid";
+import { Link } from "react-router-dom";
 
 export default function EventForm({
   setFormOpen,
@@ -235,9 +236,11 @@ export default function EventForm({
           </div>
           <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
             <button
+              as={Link}
+              to='/events'
               type='submit'
               className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
-              onClick={() => setFormOpen(false)}
+              
             >
               Cancel
             </button>

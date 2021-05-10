@@ -1,31 +1,31 @@
-import { useState } from "react";
+import { Route } from "react-router-dom";
 import EventDashboard from "../../features/events/eventDashboard/EventDashboard";
 import NavBar from "../../features/events/nav/NavBar";
 import "./App.css";
+import HomePage from "../../features/home/HomePage";
+import EventDetailedPage from "../../features/events/eventDetailed/EventDetailedPage";
+import EventForm from "../../features/events/eventForm/EventForm";
 
 export default function App() {
-  const [formOpen, setFormOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  function handleSelectEvent(event) {
-    setSelectedEvent(event);
-    setFormOpen(true);
-  }
-
-  function handleCreateFormOpen() {
-    setSelectedEvent(null);
-    setFormOpen(true);
-  }
-
   return (
-    <div className='max-w-7xl mx-auto px-4 sm:px-6 bg-gray-100'>
-      <NavBar setFormOpen={handleCreateFormOpen} />
-      <EventDashboard
-        formOpen={formOpen}
-        setFormOpen={setFormOpen}
-        selectEvent={handleSelectEvent}
-        selectedEvent={selectedEvent}
-      />
+    <div className='max-w-7xl mx-auto px-4 sm:px-6'>
+      <>
+        <Route exact path='/' component={HomePage} />
+        <Route
+          path={"/(.+)"}
+          render={() => (
+            <>
+              <NavBar />
+              <Route exact path='/events' component={EventDashboard} />
+              <Route path='/events/:id' component={EventDetailedPage} />
+              <Route
+                path={["/createEvent", "/manage/:id"]}
+                component={EventForm}
+              />
+            </>
+          )}
+        />
+      </>
     </div>
   );
 }
