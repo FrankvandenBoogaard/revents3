@@ -36,7 +36,7 @@ const user = {
 export default function EventDetailedChat() {
   return (
     <section aria-labelledby='notes-title'>
-      <div className='bg-white shadow sm:rounded-lg sm:overflow-hidden'>
+      <div className='bg-white shadow sm:rounded-lg sm:overflow-hidden mb-6'>
         <div className='divide-y divide-gray-200'>
           <div className='px-4 py-5 sm:px-6'>
             <h2 id='notes-title' className='text-lg font-medium text-gray-900'>

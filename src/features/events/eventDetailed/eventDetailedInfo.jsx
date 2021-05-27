@@ -3,6 +3,7 @@ import {
   InformationCircleIcon,
   LocationMarkerIcon,
 } from "@heroicons/react/outline";
+import { format } from "date-fns";
 
 export default function EventDetailedInfo({event}) {
   return (
@@ -35,7 +36,7 @@ export default function EventDetailedInfo({event}) {
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              {event.date}
+              {format(event.date, 'MMMM d, yyyy h:mm a')}
             </dt>
             {/* <dd className='mt-1 text-sm text-gray-900'>
                     Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim

@@ -1,5 +1,4 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
   BookmarkAltIcon,
@@ -19,6 +18,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import { NavLink, useHistory } from "react-router-dom";
 import SignedOutMenu from "./SignedOutMenu";
 import SignedInMenu from "./SignedInMenu";
+import { useSelector } from "react-redux";
 
 const solutions = [
   {
@@ -102,13 +102,7 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ setFormOpen }) {
-  const [authenticated, setAuthenticated] = useState(false);
-  const history = useHistory();
-
-  function handleSignOut() {
-    setAuthenticated(false);
-    history.push("/");
-  }
+  const {authenticated} = useSelector(state => state.auth);
 
   return (
     <Popover className='relative bg-white'>
@@ -331,9 +325,9 @@ export default function NavBar({ setFormOpen }) {
               </Popover.Group>
             </div>
             {authenticated ? (
-              <SignedInMenu handleSignOut={handleSignOut} />
+              <SignedInMenu />
             ) : (
-              <SignedOutMenu setAuthenticated={setAuthenticated} />
+              <SignedOutMenu />
             )}
           </div>
         </>

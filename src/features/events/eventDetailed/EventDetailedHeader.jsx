@@ -1,4 +1,6 @@
+import { format } from "date-fns";
 import { Link } from "react-router-dom";
+
 
 export default function EventDetailedHeader({ event }) {
   return (
@@ -19,8 +21,8 @@ export default function EventDetailedHeader({ event }) {
           <h1 className='text-xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-4xl'>
             {event.title}
           </h1>
-          <p className='mt-3 text-xl text-indigo-100 max-w-3xl'>{event.date}</p>
-          <p className='mt-3 text-xl text-indigo-100 max-w-3xl'>
+          <p className='mt-1 text-xl text-indigo-100 max-w-3xl'>{format(event.date, 'MMMM d, yyyy h:mm a')}</p>
+          <p className='mt-1 text-xl text-indigo-100 max-w-3xl'>
             Hosted by {event.hostedBy}
           </p>
         </div>

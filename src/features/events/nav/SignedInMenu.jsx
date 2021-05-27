@@ -17,7 +17,9 @@ import {
   PlusIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signOutUser } from "../../auth/authActions";
 
 const resources = [
   {
@@ -56,7 +58,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function SignedInMenu({ handleSignOut }) {
+export default function SignedInMenu() {
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
+  const history = useHistory();
+
   return (
     <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
       <Popover className='relative'>
@@ -70,10 +76,10 @@ export default function SignedInMenu({ handleSignOut }) {
             >
               <img
                 className='h-10 w-10 rounded-full float-left mr-1'
-                src='/assets/user.png'
+                src={currentUser.photoURL || "/assets/user.png"}
                 alt=''
               />
-              <p className='mt-1 max-w-2xl text-sm text-gray-500'>Bob</p>
+              <p className='mt-1 max-w-2xl text-sm text-gray-500'>{currentUser.email}</p>
               <ChevronDownIcon
                 className={classNames(
                   open ? "text-gray-600" : "text-gray-400",
@@ -106,7 +112,10 @@ export default function SignedInMenu({ handleSignOut }) {
                         className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
                         onClick={
                           item.name === "Sign out"
-                            ? handleSignOut
+                            ? () => {
+                                dispatch(signOutUser());
+                                history.push("/");
+                              }
                             : null
                         }
                       >
