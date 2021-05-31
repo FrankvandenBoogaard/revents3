@@ -1,3 +1,4 @@
+/* global google */
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
@@ -8,6 +9,7 @@ import { updateEvent, createEvent } from "../eventActions";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import MyDateInput from "../../../app/common/form/MyDateInput";
+import MyPlaceInput from "../../../app/common/form/MyPlaceInput";
 
 export default function EventForm({ match, history }) {
   const dispatch = useDispatch();
@@ -19,8 +21,14 @@ export default function EventForm({ match, history }) {
     title: "",
     category: "",
     description: "",
-    city: "",
-    venue: "",
+    city: {
+      address: "",
+      latLng: null,
+    },
+    venue: {
+      address: "",
+      latLng: null,
+    },
     date: "",
   };
 
@@ -30,8 +38,12 @@ export default function EventForm({ match, history }) {
       .notOneOf(["- maak een keuze -"])
       .required("You must provide a category"),
     description: Yup.string().required(),
-    city: Yup.string().required(),
-    venue: Yup.string().required(),
+    city: Yup.object().shape({
+      address: Yup.string().required("City is required"),
+    }),
+    venue: Yup.object().shape({
+      address: Yup.string().required("Venue is required"),
+    }),
     date: Yup.string().required(),
   });
 
@@ -55,7 +67,7 @@ export default function EventForm({ match, history }) {
           history.push("/events");
         }}
       >
-        {({ isSubmitting, dirty, isValid }) => (
+        {({ isSubmitting, dirty, isValid, values }) => (
           <Form>
             {/* <form action='#' method='POST'> */}
             <div className='px-4 pt-5 sm:px-6'>
@@ -82,8 +94,17 @@ export default function EventForm({ match, history }) {
               </div>
               <div className='px-4 py-5 bg-white sm:p-6'>
                 <div className='grid grid-cols-6 gap-3'>
-                  <MyTextInput name='city' placeholder='City' />
-                  <MyTextInput name='venue' placeholder='Venue' />
+                  <MyPlaceInput name='city' placeholder='Search city ...' />
+                  <MyPlaceInput
+                    name='venue'
+                    disabled={!values.city.latLng}
+                    placeholder='Search venue ...'
+                    options={{
+                      location: new google.maps.LatLng(values.city.latLng),
+                      radius: 1000,
+                      types: ["establishment"],
+                    }}
+                  />
                   <MyDateInput
                     name='date'
                     placeholderText='Event date'

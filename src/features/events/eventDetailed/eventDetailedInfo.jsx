@@ -4,8 +4,11 @@ import {
   LocationMarkerIcon,
 } from "@heroicons/react/outline";
 import { format } from "date-fns";
+import { useState } from "react";
+import EventDetailedMap from "./EventDetailedMap";
 
-export default function EventDetailedInfo({event}) {
+export default function EventDetailedInfo({ event }) {
+  const [mapOpen, setMapOpenToggle] = useState(false);
   return (
     <>
       <div className='border-t border-gray-200 px-4 py-5 sm:px-6'>
@@ -36,7 +39,7 @@ export default function EventDetailedInfo({event}) {
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              {format(event.date, 'MMMM d, yyyy h:mm a')}
+              {format(event.date, "MMMM d, yyyy h:mm a")}
             </dt>
             {/* <dd className='mt-1 text-sm text-gray-900'>
                     Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
@@ -56,7 +59,7 @@ export default function EventDetailedInfo({event}) {
                 className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
                 aria-hidden='true'
               />
-              {event.venue}
+              {event.venue.address}
             </dt>
           </div>
         </dl>
@@ -65,14 +68,16 @@ export default function EventDetailedInfo({event}) {
         <div className='block bg-gray-50 text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg'>
           <div className='flex items-center justify-end'>
             <button
+              onClick={() => setMapOpenToggle(!mapOpen)}
               type='submit'
               className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
             >
-              Show Map
+              {mapOpen ? "Hide map" : "Show map"}
             </button>
           </div>
         </div>
       </div>
+      {mapOpen && <EventDetailedMap latLng={event.venue.latLng} />}
     </>
   );
 }
