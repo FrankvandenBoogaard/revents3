@@ -7,6 +7,7 @@ import EventDetailedPage from "../../features/events/eventDetailed/EventDetailed
 import EventForm from "../../features/events/eventForm/EventForm";
 import Sandbox from "../../features/sandbox/Sandbox";
 import ModalManager from "../common/modals/ModalManager";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const { key } = useLocation();
@@ -15,6 +16,7 @@ export default function App() {
     <div className='max-w-7xl mx-auto px-4 sm:px-6'>
       <>
         <ModalManager />
+        <ToastContainer position='bottom-right' hideProgressBar />
         <Route exact path='/' component={HomePage} />
         <Route
           path={"/(.+)"}

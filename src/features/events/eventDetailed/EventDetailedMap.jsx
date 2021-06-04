@@ -8,7 +8,7 @@ function Marker() {
 export default function EventDetailedMap({ latLng }) {
   const zoom = 14;
   return (
-    <div className='h-72 w-full sm:rounded-b-lg'>
+    <div className='h-72 w-full'>
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyB3AnYTz0YmLuMnxrWeJVEoVTdymQEc_Ow" }}
         center={latLng}
