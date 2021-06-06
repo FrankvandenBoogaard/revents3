@@ -28,7 +28,7 @@ export default function Sandbox() {
     <>
       <h1>Testing 123</h1>
       <h3>The data is: {data}</h3>
-      <span class='relative inline-flex ml-2 rounded-md shadow-sm'>
+      <span className='relative inline-flex ml-2 rounded-md shadow-sm'>
         <button
           name='increment'
           type='submit'
@@ -42,7 +42,7 @@ export default function Sandbox() {
         </button>
         {loading && target === 'increment' && <LoadingSpinner />}
       </span>
-      <span class='relative inline-flex ml-2 rounded-md shadow-sm'>
+      <span className='relative inline-flex ml-2 rounded-md shadow-sm'>
         <button
           name='decrement'
           type='submit'

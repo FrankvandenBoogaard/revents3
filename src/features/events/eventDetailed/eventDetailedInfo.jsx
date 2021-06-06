@@ -54,28 +54,24 @@ export default function EventDetailedInfo({ event }) {
       <div className='border-t border-gray-200 px-4 py-5 sm:px-6'>
         <dl className='grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2'>
           <div className='sm:col-span-2'>
-            <dt className='text-sm font-medium text-gray-500'>
-              <LocationMarkerIcon
-                className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
-                aria-hidden='true'
-              />
-              {event.venue.address}
+            <dt className='text-sm font-medium text-gray-500 flex items-center justify-between'>
+              <div className='group inline-flex items-start'>
+                <LocationMarkerIcon
+                  className='flex-shrink-0 h-5 w-5 text-gray-400 float-left mr-1'
+                  aria-hidden='true'
+                />
+                <span>{event.venue.address}</span>
+              </div>
+              <button
+                onClick={() => setMapOpenToggle(!mapOpen)}
+                type='submit'
+                className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              >
+                {mapOpen ? "Hide map" : "Show map"}
+              </button>
             </dt>
           </div>
         </dl>
-      </div>
-      <div>
-        <div className='block bg-gray-50 text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg'>
-          <div className='flex items-center justify-end'>
-            <button
-              onClick={() => setMapOpenToggle(!mapOpen)}
-              type='submit'
-              className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-            >
-              {mapOpen ? "Hide map" : "Show map"}
-            </button>
-          </div>
-        </div>
       </div>
       {mapOpen && <EventDetailedMap latLng={event.venue.latLng} />}
     </>

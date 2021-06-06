@@ -2,12 +2,30 @@ import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./eventDetailedInfo";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useFirestoreDoc from "../../../app/hooks/useFirestoreDoc";
+import { listenToEventFromFirestore } from "../../../app/firestore/firestoreService";
+import { listenToEvents } from "../eventActions";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { Redirect } from "react-router";
 
 export default function EventDetailedPage({ match }) {
+  const dispatch = useDispatch();
   const event = useSelector((state) =>
     state.event.events.find((e) => e.id === match.params.id)
   );
+  const { loading, error } = useSelector((state) => state.async);
+
+  useFirestoreDoc({
+    query: () => listenToEventFromFirestore(match.params.id),
+    data: (event) => dispatch(listenToEvents([event])),
+    deps: [match.params.id, dispatch],
+  });
+
+  if (loading || (!event && !error))
+    return <LoadingComponent content='Loading event...' />;
+
+  if (error) return <Redirect to='/error' />
 
   return (
     <div className='max-w-3xl mx-auto grid grid-cols-1 gap-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3'>
@@ -22,7 +40,7 @@ export default function EventDetailedPage({ match }) {
         {/* Comments*/}
         <EventDetailedChat />
       </div>
-      <EventDetailedSidebar attendees={event.attendees} />
+      <EventDetailedSidebar attendees={event?.attendees} />
     </div>
   );
 }

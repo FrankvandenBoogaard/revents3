@@ -1,6 +1,6 @@
 export default function EventListItemPlaceholder() {
   return (
-    <div className='border bg-white border-gray-200 shadow rounded-md w-full mb-4'>
+    <div className='bg-white shadow rounded-lg overflow-hidden mb-4'>
       <div className='animate-pulse flex space-x-4 p-4'>
         <div className='rounded-full bg-gray-200 h-12 w-12'></div>
         <div className='flex-1 space-y-4 py-1'>

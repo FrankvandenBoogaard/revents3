@@ -1,28 +1,41 @@
 import { ClockIcon, LocationMarkerIcon } from "@heroicons/react/outline";
 import EventListAttendee from "./EventListAttendee";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteEvent } from "../eventActions";
-import {format} from 'date-fns';
+import { format } from "date-fns";
+import { deleteEventInFirestore } from "../../../app/firestore/firestoreService";
 
 export default function EventListItem({ event }) {
-  const dispatch = useDispatch();
-
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mb-4'>
-      <div className='px-4 py-5 sm:px-6'>
-        <img
-          className='h-14 w-14 rounded-full float-left mr-4'
-          src={event.hostPhotoURL}
-          alt=''
-        />
-        <h3 className='text-lg leading-6 font-medium text-gray-900'>
-          {event.title}
-        </h3>
-        <p className='mt-1 max-w-2xl text-sm text-gray-500'>
-          Hosted by {event.hostedBy}
-        </p>
+      <div className='flex px-4 py-5 sm:px-6'>
+        <div className='w-0 flex-1'>
+          <div className='flex items-start'>
+            <div className='flex-shrink-0 pt-0.5'>
+              <img
+                className='h-14 w-14 rounded-full float-left mr-4'
+                src={event.hostPhotoURL}
+                alt=''
+              />
+            </div>
+            <div className='flex-1 w-0 '>
+              <h3 className='text-lg leading-6 font-medium text-gray-900'>
+                {event.title}
+              </h3>
+              <p className='mt-1 max-w-2xl text-sm text-gray-500'>
+                Hosted by {event.hostedBy}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className='flex items-center justify-center'>
+          {event.isCancelled && (
+            <div className='inline-flex items-center px-2.5 py-0.5 h-8 rounded-md text-sm font-medium bg-red-100 text-red-800'>
+              This event has been cancelled
+            </div>
+          )}
+        </div>
       </div>
+      
       <div className='border-t border-gray-200'>
         <dl>
           <div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -34,7 +47,7 @@ export default function EventListItem({ event }) {
               Date
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
-              {format(event.date, 'MMMM d, yyyy h:mm a')}
+              {format(event.date, "MMMM d, yyyy h:mm a")}
             </dd>
           </div>
           <div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -71,7 +84,7 @@ export default function EventListItem({ event }) {
               <>
                 <Link
                   className='whitespace-nowrap text-base font-medium text-red-500 hover:text-red-900'
-                  onClick={() => dispatch(deleteEvent(event.id))}
+                  onClick={() => deleteEventInFirestore(event.id)}
                 >
                   Delete
                 </Link>
