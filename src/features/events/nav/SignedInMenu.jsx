@@ -1,25 +1,11 @@
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import {
-  BookmarkAltIcon,
-  CalendarIcon,
-  LogoutIcon,
-  CursorClickIcon,
-  MenuIcon,
-  PhoneIcon,
-  PlayIcon,
-  RefreshIcon,
-  ShieldCheckIcon,
-  SupportIcon,
-  ViewGridIcon,
-  XIcon,
-  UserIcon,
-  PlusIcon,
-} from "@heroicons/react/outline";
+import { LogoutIcon, PlusIcon, AdjustmentsIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { Link, NavLink, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { signOutUser } from "../../auth/authActions";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { signOutFirebase } from "../../../app/firestore/firebaseService";
+import { toast } from "react-toastify";
 
 const resources = [
   {
@@ -30,17 +16,17 @@ const resources = [
     icon: PlusIcon,
   },
   {
-    name: "My profile",
+    name: "My account",
     description:
-      "Learn how to maximize our platform to get the most out of it.",
-    href: "#",
-    icon: UserIcon,
+      "Change password from your account.",
+    href: "/account",
+    icon: AdjustmentsIcon,
   },
   {
     name: "Sign out",
     description:
       "See what meet-ups and other events we might be planning near you.",
-    href: "#",
+    // href: "#",
     icon: LogoutIcon,
   },
 ];
@@ -59,9 +45,17 @@ function classNames(...classes) {
 }
 
 export default function SignedInMenu() {
-  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   const history = useHistory();
+
+  async function handleSignOut() {
+    try {
+      await signOutFirebase();
+      history.push("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
@@ -79,7 +73,9 @@ export default function SignedInMenu() {
                 src={currentUser.photoURL || "/assets/user.png"}
                 alt=''
               />
-              <p className='mt-1 max-w-2xl text-sm text-gray-500'>{currentUser.email}</p>
+              <p className='mt-1 max-w-2xl text-sm text-gray-500'>
+                {currentUser.displayName}
+              </p>
               <ChevronDownIcon
                 className={classNames(
                   open ? "text-gray-600" : "text-gray-400",
@@ -111,12 +107,7 @@ export default function SignedInMenu() {
                         to={item.href}
                         className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
                         onClick={
-                          item.name === "Sign out"
-                            ? () => {
-                                dispatch(signOutUser());
-                                history.push("/");
-                              }
-                            : null
+                          item.name === "Sign out" ? handleSignOut : null
                         }
                       >
                         <item.icon
