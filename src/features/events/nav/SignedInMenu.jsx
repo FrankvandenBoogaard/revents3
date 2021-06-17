@@ -1,35 +1,17 @@
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import { LogoutIcon, PlusIcon, AdjustmentsIcon } from "@heroicons/react/outline";
+import {
+  LogoutIcon,
+  PlusIcon,
+  AdjustmentsIcon,
+  UserIcon,
+} from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { signOutFirebase } from "../../../app/firestore/firebaseService";
 import { toast } from "react-toastify";
 
-const resources = [
-  {
-    name: "Create Event",
-    description:
-      "Get all of your questions answered in our forums or contact support.",
-    href: "/createEvent",
-    icon: PlusIcon,
-  },
-  {
-    name: "My account",
-    description:
-      "Change password from your account.",
-    href: "/account",
-    icon: AdjustmentsIcon,
-  },
-  {
-    name: "Sign out",
-    description:
-      "See what meet-ups and other events we might be planning near you.",
-    // href: "#",
-    icon: LogoutIcon,
-  },
-];
 // const recentPosts = [
 //   { id: 1, name: "Boost your conversion rate", href: "#" },
 //   {
@@ -45,8 +27,8 @@ function classNames(...classes) {
 }
 
 export default function SignedInMenu() {
-  const { currentUser } = useSelector((state) => state.auth);
   const history = useHistory();
+  const { currentUserProfile } = useSelector((state) => state.profile);
 
   async function handleSignOut() {
     try {
@@ -70,11 +52,11 @@ export default function SignedInMenu() {
             >
               <img
                 className='h-10 w-10 rounded-full float-left mr-1'
-                src={currentUser.photoURL || "/assets/user.png"}
+                src={currentUserProfile.photoURL || "/assets/user.png"}
                 alt=''
               />
               <p className='mt-1 max-w-2xl text-sm text-gray-500'>
-                {currentUser.displayName}
+                {currentUserProfile.displayName}
               </p>
               <ChevronDownIcon
                 className={classNames(
@@ -101,29 +83,82 @@ export default function SignedInMenu() {
               >
                 <div className='rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden'>
                   <div className='relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8'>
-                    {resources.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
-                        onClick={
-                          item.name === "Sign out" ? handleSignOut : null
-                        }
-                      >
-                        <item.icon
-                          className='flex-shrink-0 h-6 w-6 text-indigo-600'
-                          aria-hidden='true'
-                        />
-                        <div className='ml-4'>
-                          <p className='text-base font-medium text-gray-900'>
-                            {item.name}
-                          </p>
-                          <p className='mt-1 text-sm text-gray-500'>
-                            {item.description}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
+                    <Link
+                      key='Create Event'
+                      to='/createEvent'
+                      className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                    >
+                      <PlusIcon
+                        className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                        aria-hidden='true'
+                      />
+                      <div className='ml-4'>
+                        <p className='text-base font-medium text-gray-900'>
+                          Create Event
+                        </p>
+                        <p className='mt-1 text-sm text-gray-500'>
+                          Get all of your questions answered in our forums or
+                          contact support.
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      key='My profile'
+                      to={`/profile/${currentUserProfile.id}`}
+                      className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                    >
+                      <UserIcon
+                        className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                        aria-hidden='true'
+                      />
+                      <div className='ml-4'>
+                        <p className='text-base font-medium text-gray-900'>
+                          My profile
+                        </p>
+                        <p className='mt-1 text-sm text-gray-500'>
+                          Get all of your questions answered in our forums or
+                          contact support.
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      key='My account'
+                      to='/account'
+                      className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                    >
+                      <AdjustmentsIcon
+                        className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                        aria-hidden='true'
+                      />
+                      <div className='ml-4'>
+                        <p className='text-base font-medium text-gray-900'>
+                          My account
+                        </p>
+                        <p className='mt-1 text-sm text-gray-500'>
+                          Change password from your account.
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      key='Sign out'
+                      to='#'
+                      className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                      onClick={handleSignOut}
+                    >
+                      <LogoutIcon
+                        className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                        aria-hidden='true'
+                      />
+                      <div className='ml-4'>
+                        <p className='text-base font-medium text-gray-900'>
+                          Sign out
+                        </p>
+                        <p className='mt-1 text-sm text-gray-500'>
+                          See what meet-ups and other events we might be
+                          planning near you.
+                        </p>
+                      </div>
+                    </Link>
                   </div>
                   {/* <div className='px-5 py-5 bg-gray-50 sm:px-8 sm:py-8'>
                     <div>
