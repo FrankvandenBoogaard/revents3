@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/outline";
 import { useState } from "react";
 import AboutTab from "./AboutTab";
+import PhotosTab from "./PhotosTab";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -37,7 +38,13 @@ export default function ProfileContent({ profile, isCurrentUser }) {
         <AboutTab profile={profile} isCurrentUser={isCurrentUser} />
       ),
     },
-    { name: "Photos", icon: KeyIcon },
+    {
+      name: "Photos",
+      icon: KeyIcon,
+      render: () => (
+        <PhotosTab profile={profile} isCurrentUser={isCurrentUser} />
+      ),
+    },
     { name: "Events", icon: CreditCardIcon },
     { name: "Followers", icon: UserGroupIcon },
     { name: "Following", icon: ViewGridAddIcon },

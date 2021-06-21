@@ -5,7 +5,6 @@ import MyTextInput from "../../app/common/form/MyTextInput";
 import { useDispatch } from "react-redux";
 import { closeModal } from "../../app/common/modals/modalReducer";
 import { signInWithEmail } from "../../app/firestore/firebaseService";
-import { XCircleIcon } from "@heroicons/react/solid";
 import SocialLogin from "./SocialLogin";
 
 export default function LoginForm() {
