@@ -1,24 +1,40 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-} from "@heroicons/react/outline";
+import { HomeIcon, UsersIcon } from "@heroicons/react/outline";
 
-import Calendar from 'react-calendar';
-
-const navigation = [
-  { name: "All Events", icon: HomeIcon, href: "#", current: true },
-  { name: "I'm going", icon: UsersIcon, href: "#", count: 3, current: false },
-  { name: "I'm hosting", icon: UsersIcon, href: "#", count: 3, current: false },
-  { name: "Projects", icon: FolderIcon, href: "#", count: 4, current: false },
-];
+import Calendar from "react-calendar";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function EventFilters() {
+export default function EventFilters({ predicate, setPredicate, loading }) {
+  const navigation = [
+    {
+      name: "All Events",
+      active: "all",
+      icon: HomeIcon,
+      href: "#",
+    },
+    {
+      name: "I'm going",
+      active: "isGoing",
+      icon: UsersIcon,
+      href: "#",
+      count: 3,
+    },
+    {
+      name: "I'm hosting",
+      active: "isHost",
+      icon: UsersIcon,
+      href: "#",
+      count: 3,
+    },
+  ];
+
+  function itemCurrent(item) {
+    return predicate.get("filter") === item.active;
+  }
+
   return (
     <div className='flex flex-col flex-grow rounded-lg border-r border-gray-200 pt-3 bg-white overflow-y-auto'>
       <div className='flex items-center flex-shrink-0 px-4 text-lg font-medium text-gray-900'>
@@ -29,9 +45,11 @@ export default function EventFilters() {
           {navigation.map((item) => (
             <a
               key={item.name}
+              disabled={loading}
+              onClick={() => setPredicate("filter", item.active)}
               href={item.href}
               className={classNames(
-                item.current
+                itemCurrent(item)
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                 "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
@@ -39,7 +57,7 @@ export default function EventFilters() {
             >
               <item.icon
                 className={classNames(
-                  item.current
+                  itemCurrent(item)
                     ? "text-gray-500"
                     : "text-gray-400 group-hover:text-gray-500",
                   "mr-3 flex-shrink-0 h-6 w-6"
@@ -50,7 +68,7 @@ export default function EventFilters() {
               {item.count ? (
                 <span
                   className={classNames(
-                    item.current
+                    itemCurrent(item)
                       ? "bg-white"
                       : "bg-gray-100 group-hover:bg-gray-200",
                     "ml-3 inline-block py-0.5 px-3 text-xs font-medium rounded-full"
@@ -67,7 +85,12 @@ export default function EventFilters() {
         Calendar
       </div>
       <div className='p-4'>
-      <Calendar className='bg-gray-50 rounded-lg' />
+        <Calendar
+          onChange={(date) => setPredicate("startDate", date)}
+          value={predicate.get("startDate") || new Date()}
+          tileDisabled={() => loading}
+          className='bg-gray-50 rounded-lg'
+        />
       </div>
     </div>
   );

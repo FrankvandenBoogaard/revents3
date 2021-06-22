@@ -11,10 +11,13 @@ import { Redirect } from "react-router";
 
 export default function EventDetailedPage({ match }) {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.async);
   const event = useSelector((state) =>
     state.event.events.find((e) => e.id === match.params.id)
   );
-  const { loading, error } = useSelector((state) => state.async);
+  const isHost = event?.hostUid === currentUser.uid;
+  const isGoing = event?.attendees?.some((a) => a.id === currentUser.uid);
 
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
@@ -25,7 +28,7 @@ export default function EventDetailedPage({ match }) {
   if (loading || (!event && !error))
     return <LoadingComponent content='Loading event...' />;
 
-  if (error) return <Redirect to='/error' />
+  if (error) return <Redirect to='/error' />;
 
   return (
     <div className='max-w-3xl mx-auto grid grid-cols-1 gap-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3'>
@@ -33,14 +36,18 @@ export default function EventDetailedPage({ match }) {
         {/* Description list*/}
         <section aria-labelledby='applicant-information-title'>
           <div className='bg-white shadow sm:rounded-lg'>
-            <EventDetailedHeader event={event} />
+            <EventDetailedHeader
+              event={event}
+              isGoing={isGoing}
+              isHost={isHost}
+            />
             <EventDetailedInfo event={event} />
           </div>
         </section>
         {/* Comments*/}
         <EventDetailedChat />
       </div>
-      <EventDetailedSidebar attendees={event?.attendees} />
+      <EventDetailedSidebar attendees={event?.attendees} hostUid={event.hostUid} />
     </div>
   );
 }

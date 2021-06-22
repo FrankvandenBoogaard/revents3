@@ -52,11 +52,11 @@ export default function SignedInMenu() {
             >
               <img
                 className='h-10 w-10 rounded-full float-left mr-1'
-                src={currentUserProfile.photoURL || "/assets/user.png"}
+                src={currentUserProfile?.photoURL || "/assets/user.png"}
                 alt=''
               />
               <p className='mt-1 max-w-2xl text-sm text-gray-500'>
-                {currentUserProfile.displayName}
+                {currentUserProfile?.displayName}
               </p>
               <ChevronDownIcon
                 className={classNames(
@@ -104,7 +104,7 @@ export default function SignedInMenu() {
                     </Link>
                     <Link
                       key='My profile'
-                      to={`/profile/${currentUserProfile.id}`}
+                      to={`/profile/${currentUserProfile?.id}`}
                       className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
                     >
                       <UserIcon

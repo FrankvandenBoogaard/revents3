@@ -22,7 +22,7 @@ export default function EventListItem({ event }) {
                 {event.title}
               </h3>
               <p className='mt-1 max-w-2xl text-sm text-gray-500'>
-                Hosted by {event.hostedBy}
+                Hosted by <Link to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link>
               </p>
             </div>
           </div>

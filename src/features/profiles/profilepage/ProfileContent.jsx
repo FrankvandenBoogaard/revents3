@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/outline";
 import { useState } from "react";
 import AboutTab from "./AboutTab";
+import EventsTab from "./EventsTab";
 import PhotosTab from "./PhotosTab";
 
 function classNames(...classes) {
@@ -45,7 +46,13 @@ export default function ProfileContent({ profile, isCurrentUser }) {
         <PhotosTab profile={profile} isCurrentUser={isCurrentUser} />
       ),
     },
-    { name: "Events", icon: CreditCardIcon },
+    {
+      name: "Events",
+      icon: CreditCardIcon,
+      render: () => (
+        <EventsTab profile={profile} />
+      ),
+    },
     { name: "Followers", icon: UserGroupIcon },
     { name: "Following", icon: ViewGridAddIcon },
   ];
