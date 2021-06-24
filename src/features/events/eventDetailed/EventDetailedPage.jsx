@@ -1,5 +1,5 @@
 import EventDetailedHeader from "./EventDetailedHeader";
-import EventDetailedInfo from "./eventDetailedInfo";
+import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +45,7 @@ export default function EventDetailedPage({ match }) {
           </div>
         </section>
         {/* Comments*/}
-        <EventDetailedChat />
+        <EventDetailedChat eventId={event.id} currentUser={currentUser} />
       </div>
       <EventDetailedSidebar attendees={event?.attendees} hostUid={event.hostUid} />
     </div>
