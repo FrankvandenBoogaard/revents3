@@ -41,11 +41,11 @@ export default function ProfilePage({ match }) {
     <div className='space-y-6 mb-5'>
       <ProfileHeader
         profile={selectedUserProfile}
-        isCurrentUser={currentUser.uid === selectedUserProfile.id}
+        isCurrentUser={currentUser?.uid === selectedUserProfile.id}
       />
       <ProfileContent
         profile={selectedUserProfile}
-        isCurrentUser={currentUser.uid === selectedUserProfile.id}
+        isCurrentUser={currentUser?.uid === selectedUserProfile.id}
       />
       {/* <div className='flex justify-end'>
         <button

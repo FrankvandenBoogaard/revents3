@@ -25,12 +25,14 @@ import { useState } from "react";
 import AboutTab from "./AboutTab";
 import EventsTab from "./EventsTab";
 import PhotosTab from "./PhotosTab";
+import FollowingTab from "./FollowingTab";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProfileContent({ profile, isCurrentUser }) {
+  const [currentPane, setCurrentPane] = useState("About");
   const navigation = [
     {
       name: "About",
@@ -49,15 +51,24 @@ export default function ProfileContent({ profile, isCurrentUser }) {
     {
       name: "Events",
       icon: CreditCardIcon,
+      render: () => <EventsTab profile={profile} />,
+    },
+    {
+      name: "Followers",
+      icon: UserGroupIcon,
       render: () => (
-        <EventsTab profile={profile} />
+        <FollowingTab key={profile.id} profile={profile} currentPane={currentPane} />
       ),
     },
-    { name: "Followers", icon: UserGroupIcon },
-    { name: "Following", icon: ViewGridAddIcon },
+    {
+      name: "Following",
+      icon: ViewGridAddIcon,
+      render: () => (
+        <FollowingTab key={profile.id} profile={profile} currentPane={currentPane} />
+      ),
+    },
   ];
 
-  const [currentPane, setCurrentPane] = useState("About");
   const renderPane = navigation.find((element) => element.name === currentPane);
 
   return (
@@ -66,7 +77,7 @@ export default function ProfileContent({ profile, isCurrentUser }) {
         {renderPane.render()}
       </div>
       <aside className='py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3'>
-        <nav className='space-y-1'>
+        <nav className='space-y-1 bg-gray-50 rounded-lg'>
           {navigation.map((item) => (
             <div
               key={item.name}
@@ -74,7 +85,7 @@ export default function ProfileContent({ profile, isCurrentUser }) {
               className={classNames(
                 item.name === currentPane
                   ? "bg-gray-50 text-indigo-700 hover:text-indigo-700 hover:bg-white"
-                  : "text-gray-900 hover:text-gray-900 hover:bg-gray-50",
+                  : "text-gray-900 hover:text-gray-900 hover:bg-white",
                 "group rounded-md px-3 py-2 flex items-center text-sm font-medium cursor-pointer"
               )}
               aria-current={item.name === currentPane ? "page" : undefined}

@@ -13,7 +13,7 @@ export default function EventListItem({ event }) {
             <div className='flex-shrink-0 pt-0.5'>
               <img
                 className='h-14 w-14 rounded-full float-left mr-4'
-                src={event.hostPhotoURL}
+                src={event.hostPhotoURL || '/assets/user.png'}
                 alt=''
               />
             </div>

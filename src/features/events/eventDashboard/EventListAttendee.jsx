@@ -5,7 +5,7 @@ export default function EventListAttendee({ attendee }) {
     <Link to={`/profile/${attendee.id}`}>
       <img
         className='inline-block h-10 w-10 rounded-full ring-2 ring-white'
-        src={attendee.photoURL}
+        src={attendee.photoURL || '/assets/user.png'}
         alt={attendee.name}
       />
     </Link>

@@ -1,10 +1,59 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { LoadingSpinner } from "../../../app/common/util/util";
+import {
+  followUser,
+  getFollowingDoc,
+  unFollowUser,
+} from "../../../app/firestore/firestoreService";
+import { setFollowUser, setUnFollowUser } from "../profileActions";
+import { CLEAR_FOLLOWINGS } from "../profileConstants";
 
 export default function ProfileHeader({ profile, isCurrentUser }) {
-  const [target, setTarget] = useState(null);
-  const { loading } = useSelector((state) => state.async);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState();
+  const { followingUser } = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    if (isCurrentUser) return;
+    setLoading(true);
+    async function fetchFollowingDoc() {
+      try {
+        const followingDoc = await getFollowingDoc(profile.id);
+        if (followingDoc && followingDoc.exists) {
+          dispatch(setFollowUser());
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+    fetchFollowingDoc().then(() => setLoading(false));
+    return () => dispatch({ type: CLEAR_FOLLOWINGS });
+  }, [dispatch, profile.id, isCurrentUser]);
+
+  async function handleFollowUser() {
+    setLoading(true);
+    try {
+      await followUser(profile);
+      dispatch(setFollowUser());
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function handleUnFollowUser() {
+    setLoading(true);
+    try {
+      await unFollowUser(profile);
+      dispatch(setUnFollowUser());
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
@@ -13,6 +62,16 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
           <h3 className='text-lg font-medium leading-6 text-gray-900'>
             Profile
           </h3>
+          {!isCurrentUser &&
+            (followingUser ? (
+              <span className='my-2 -ml-2 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800'>
+                Following
+              </span>
+            ) : (
+              <span className='my-2 -ml-2 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800'>
+                Not Following
+              </span>
+            ))}
           <p className='mt-1 text-sm text-gray-500'>
             This information will be displayed publicly so be careful what you
             share.
@@ -36,11 +95,15 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
             </div>
             <div className='sm:col-span-1'>
               <dt className='text-sm font-medium text-gray-500'>Followers</dt>
-              <dd className='mt-1 text-sm text-gray-900'>10</dd>
+              <dd className='mt-1 text-3xl text-gray-900'>
+                {profile.followerCount || 0}
+              </dd>
             </div>
             <div className='sm:col-span-1'>
               <dt className='text-sm font-medium text-gray-500'>Following</dt>
-              <dd className='mt-1 text-sm text-gray-900'>5</dd>
+              <dd className='mt-1 text-3xl text-gray-900'>
+                {profile.followingCount || 0}
+              </dd>
             </div>
 
             <div>
@@ -62,21 +125,23 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
                 </button> */}
               </div>
             </div>
+
             {!isCurrentUser && (
               <div className='sm:col-span-2'>
                 <span className='relative inline-flex rounded-md shadow-sm'>
                   <button
-                    name='unfollow'
+                    name='follow'
                     type='button'
                     className='inline-flex items-center justify-center w-24 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                    //   onClick={(e) => {
-                    //     dispatch(increment(20));
-                    //     setTarget(e.target.name);
-                    //   }}
+                    onClick={
+                      followingUser
+                        ? () => handleUnFollowUser()
+                        : () => handleFollowUser()
+                    }
                   >
-                    Unfollow
+                    {followingUser ? "Unfollow" : "Follow"}
                   </button>
-                  {loading && target === "unfollow" && <LoadingSpinner />}
+                  {loading && <LoadingSpinner />}
                 </span>
               </div>
             )}
