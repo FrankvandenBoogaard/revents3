@@ -231,7 +231,6 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
                   rows={3}
                   className='shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md'
                   placeholder='you@example.com'
-                  defaultValue={""}
                 />
               </div>
               <p className='mt-2 text-sm text-gray-500'>

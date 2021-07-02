@@ -13,7 +13,7 @@ export default function EventListItem({ event }) {
             <div className='flex-shrink-0 pt-0.5'>
               <img
                 className='h-14 w-14 rounded-full float-left mr-4'
-                src={event.hostPhotoURL || '/assets/user.png'}
+                src={event.hostPhotoURL || "/assets/user.png"}
                 alt=''
               />
             </div>
@@ -22,7 +22,8 @@ export default function EventListItem({ event }) {
                 {event.title}
               </h3>
               <p className='mt-1 max-w-2xl text-sm text-gray-500'>
-                Hosted by <Link to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link>
+                Hosted by{" "}
+                <Link to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link>
               </p>
             </div>
           </div>
@@ -35,7 +36,7 @@ export default function EventListItem({ event }) {
           )}
         </div>
       </div>
-      
+
       <div className='border-t border-gray-200'>
         <dl>
           <div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -82,12 +83,12 @@ export default function EventListItem({ event }) {
             <dt className='text-sm font-medium text-gray-500 col-span-2'></dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 text-right'>
               <>
-                <Link
+                <button
                   className='whitespace-nowrap text-base font-medium text-red-500 hover:text-red-900'
                   onClick={() => deleteEventInFirestore(event.id)}
                 >
                   Delete
-                </Link>
+                </button>
                 <Link
                   className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
                   to={`/events/${event.id}`}
