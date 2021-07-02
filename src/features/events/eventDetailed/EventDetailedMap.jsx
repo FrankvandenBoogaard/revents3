@@ -10,7 +10,7 @@ export default function EventDetailedMap({ latLng }) {
   return (
     <div className='h-72 w-full'>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyB3AnYTz0YmLuMnxrWeJVEoVTdymQEc_Ow" }}
+        bootstrapURLKeys={{ key: process.env.REACT_APP_API_KEY }}
         center={latLng}
         zoom={zoom}
       >

@@ -2,12 +2,14 @@
 import { HomeIcon, UsersIcon } from "@heroicons/react/outline";
 
 import Calendar from "react-calendar";
+import { useSelector } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function EventFilters({ predicate, setPredicate, loading }) {
+  const { authenticated } = useSelector((state) => state.auth);
   const navigation = [
     {
       name: "All Events",
@@ -40,6 +42,7 @@ export default function EventFilters({ predicate, setPredicate, loading }) {
       <div className='flex items-center flex-shrink-0 px-4 text-lg font-medium text-gray-900'>
         Filters
       </div>
+      {authenticated &&
       <div className='mt-3 flex-grow flex flex-col'>
         <nav className='flex-1 px-2 bg-white space-y-1' aria-label='Sidebar'>
           {navigation.map((item) => (
@@ -80,7 +83,7 @@ export default function EventFilters({ predicate, setPredicate, loading }) {
             </a>
           ))}
         </nav>
-      </div>
+      </div>}
       <div className='flex items-center flex-shrink-0 px-4 pt-3 mt-3 border-t border-gray-200 text-lg font-medium text-gray-900'>
         Calendar
       </div>

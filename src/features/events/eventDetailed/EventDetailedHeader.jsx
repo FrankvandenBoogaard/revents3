@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LoadingSpinner } from "../../../app/common/util/util";
@@ -7,9 +8,12 @@ import {
   addUserAttendance,
   cancelUserAttendance,
 } from "../../../app/firestore/firestoreService";
+import UnauthModal from "../../auth/UnauthModal";
 
 export default function EventDetailedHeader({ event, isHost, isGoing }) {
   const [loading, setLoading] = useState(false);
+  const { authenticated } = useSelector((state) => state.auth);
+  const [modalOpen, setModalOpen] = useState(false);
 
   async function handleUserJoinEvent() {
     setLoading(true);
@@ -35,6 +39,7 @@ export default function EventDetailedHeader({ event, isHost, isGoing }) {
 
   return (
     <>
+      {modalOpen && <UnauthModal setModalOpen={setModalOpen} />}
       <div className='relative'>
         <div className='absolute inset-0'>
           <img
@@ -55,7 +60,7 @@ export default function EventDetailedHeader({ event, isHost, isGoing }) {
             {format(event.date, "MMMM d, yyyy h:mm a")}
           </p>
           <p className='mt-1 text-xl text-indigo-100 max-w-3xl'>
-            Hosted by{" "}
+            Hosted by
             <Link to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link>
           </p>
         </div>
@@ -79,7 +84,11 @@ export default function EventDetailedHeader({ event, isHost, isGoing }) {
                 <button
                   type='button'
                   className='inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                  onClick={handleUserJoinEvent}
+                  onClick={
+                    authenticated
+                      ? handleUserJoinEvent
+                      : () => setModalOpen(true)
+                  }
                 >
                   Join This Event
                 </button>

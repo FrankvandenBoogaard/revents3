@@ -33,7 +33,7 @@ export default function EventDetailedChatForm({
             <div className='flex-shrink-0'>
               <img
                 className='h-10 w-10 rounded-full'
-                src={currentUser.photoURL || "/assets/user.png"}
+                src={currentUser?.photoURL || "/assets/user.png"}
                 alt=''
               />
             </div>
@@ -53,7 +53,6 @@ export default function EventDetailedChatForm({
                           rows={2}
                           className='shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border border-gray-300 rounded-md'
                           placeholder='Enter your comment (Enter to submit, SHIFT + Enter for new line)'
-                          defaultValue={""}
                           onKeyPress={(e) => {
                             if (e.key === "Enter" && e.shiftKey) {
                               return;
